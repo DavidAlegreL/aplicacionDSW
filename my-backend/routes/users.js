@@ -4,18 +4,21 @@ const db = require('../database');
 
 // Crear un nuevo usuario
 router.post('/', (req, res) => {
-  const { name, password } = req.body;
+  const { name, pwd1, pwd2 } = req.body;
   console.log('Datos recibidos:', req.body); // Agrega esta línea para verificar los datos recibidos
-  if (!name || !password) {
-    return res.status(400).json('Nombre y contraseña son requeridos');
+  if (!name || !pwd1 || !pwd2) {
+    return res.status(400).json({ error: 'Nombre y contraseñas son requeridos' });
   }
-  db.run('INSERT INTO User(name, password) VALUES(?, ?)', [name, password], function(err) {
+  if (pwd1 !== pwd2) {
+    return res.status(400).json({ error: 'Las contraseñas no coinciden' });
+  }
+  db.run('INSERT INTO User(name, password) VALUES(?, ?)', [name, pwd1], function(err) {
     if (err) {
       console.error('Error insertando usuario', err.message);
-      return res.status(500).json('Error insertando usuario');
+      return res.status(500).json({ error: 'Error insertando usuario' });
     }
     console.log(`Usuario creado con id: ${this.lastID}`);
-    res.send('Usuario creado');
+    res.status(201).json({ message: 'Usuario creado', userId: this.lastID });
   });
 });
 
@@ -24,7 +27,7 @@ router.get('/', (req, res) => {
   db.all('SELECT * FROM User', (err, rows) => {
     if (err) {
       console.error('Error obteniendo usuarios', err.message);
-      res.status(500).json('Error obteniendo usuarios');
+      res.status(500).json({ error: 'Error obteniendo usuarios' });
     }
     res.json(rows);
   });
@@ -34,15 +37,34 @@ router.get('/', (req, res) => {
 router.post('/delete', (req, res) => {
   const { userId } = req.body;
   if (!userId) {
-    return res.status(400).send('ID de usuario requerido');
+    return res.status(400).send({ error: 'ID de usuario requerido' });
   }
   db.run('DELETE FROM User WHERE id=?', [userId], function(err) {
     if (err) {
       console.error('Error borrando usuario', err.message);
-      return res.status(500).send('Error borrando usuario');
+      return res.status(500).send({ error: 'Error borrando usuario' });
     }
     console.log(`Usuario borrado con id: ${userId}`);
-    res.send('Usuario borrado');
+    res.status(200).send({ message: 'Usuario borrado' });
+  });
+});
+
+// Login de usuario
+router.post('/login', (req, res) => {
+  const { name, password } = req.body;
+  console.log('Datos recibidos para login:', req.body);
+  if (!name || !password) {
+    return res.status(400).json({ error: 'Nombre y contraseña son requeridos' });
+  }
+  db.get('SELECT * FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
+    if (err) {
+      console.error('Error autenticando usuario', err.message);
+      return res.status(500).json({ error: 'Error autenticando usuario' });
+    }
+    if (!row) {
+      return res.status(401).json({ error: 'Nombre o contraseña incorrectos' });
+    }
+    res.status(200).json({ message: 'Login exitoso', user: row });
   });
 });
 
