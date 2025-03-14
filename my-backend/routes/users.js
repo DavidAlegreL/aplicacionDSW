@@ -68,4 +68,35 @@ router.post('/login', (req, res) => {
   });
 });
 
+// Obtener el perfil del usuario por su ID
+router.get('/profile/:userId', (req, res) => {
+  const { userId } = req.params;
+  db.get('SELECT * FROM User WHERE id = ?', [userId], (err, row) => {
+    if (err) {
+      console.error('Error obteniendo perfil del usuario', err.message);
+      return res.status(500).json({ error: 'Error obteniendo perfil del usuario' });
+    }
+    if (!row) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.status(200).json(row);
+  });
+});
+
+// Actualizar el perfil del usuario por su ID
+router.put('/profile/:userId', (req, res) => {
+  const { userId } = req.params;
+  const { realName, email, phone } = req.body;
+  db.run('UPDATE User SET realName = ?, email = ?, phone = ? WHERE id = ?', [realName, email, phone, userId], function(err) {
+    if (err) {
+      console.error('Error actualizando perfil del usuario', err.message);
+      return res.status(500).json({ error: 'Error actualizando perfil del usuario' });
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.status(200).json({ message: 'Perfil actualizado' });
+  });
+});
+
 module.exports = router;

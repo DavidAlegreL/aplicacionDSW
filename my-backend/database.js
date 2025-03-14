@@ -13,7 +13,10 @@ function createTables() {
     db.run(`CREATE TABLE IF NOT EXISTS User (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        realName TEXT,
+        email TEXT NOT NULL,
+        phone TEXT
     )`);
     db.run(`CREATE TABLE IF NOT EXISTS Tweet (
         id INTEGER PRIMARY KEY,
