@@ -87,7 +87,7 @@ router.get('/profile/:userId', (req, res) => {
 router.put('/profile/:userId', (req, res) => {
   const { userId } = req.params;
   const { realName, email, phone } = req.body;
-  db.run('UPDATE User SET realName = ?, email = ?, phone = ? WHERE id = ?', [realName, email, phone, userId], function(err) {
+  db.run('UPDATE User SET  email = ?, phone = ?, address = ? WHERE id = ?', [realName, email, phone, userId], function(err) {
     if (err) {
       console.error('Error actualizando perfil del usuario', err.message);
       return res.status(500).json({ error: 'Error actualizando perfil del usuario' });

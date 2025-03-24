@@ -18,11 +18,5 @@ function createTables() {
         email TEXT NOT NULL,
         phone TEXT
     )`);
-    db.run(`CREATE TABLE IF NOT EXISTS Tweet (
-        id INTEGER PRIMARY KEY,
-        text TEXT NOT NULL,
-        user_id INTEGER,
-        FOREIGN KEY (user_id) REFERENCES User(id)
-    )`);
 }
 module.exports = db;
