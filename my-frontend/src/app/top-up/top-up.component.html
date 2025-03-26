@@ -1,0 +1,33 @@
+<div class="top-up-container">
+    <h1>Añadir Saldo</h1>
+  
+    <!-- Formulario para verificar la tarjeta -->
+    <form (ngSubmit)="verifyCard()" class="top-up-form" *ngIf="!isCardVerified">
+      <div>
+        <label for="cardNumber">Número de Tarjeta:</label>
+        <input
+          id="cardNumber"
+          [(ngModel)]="cardNumber"
+          name="cardNumber"
+          type="text"
+          maxlength="19"
+          (input)="formatCardNumber()"
+          required
+        />
+      </div>
+      <div>
+        <label for="cvv">CVV:</label>
+        <input id="cvv" [(ngModel)]="cvv" name="cvv" type="text" maxlength="3" required />
+      </div>
+      <button type="submit">Verificar Tarjeta</button>
+    </form>
+  
+    <!-- Formulario para añadir saldo -->
+    <form (ngSubmit)="addBalance()" class="top-up-form" *ngIf="isCardVerified">
+      <div>
+        <label for="amount">Cantidad:</label>
+        <input id="amount" [(ngModel)]="amount" name="amount" type="number" min="1" required />
+      </div>
+      <button type="submit">Añadir Saldo</button>
+    </form>
+  </div>

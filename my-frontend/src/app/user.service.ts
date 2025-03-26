@@ -19,15 +19,24 @@ export class UserService {
     return this.http.post<any>(this.apiUrl, info);
   }
 
-  login(name: string, password: string): Observable<any> {
+  login(name: string, password: string): Observable<{ userId: number }> {
     let info = {
       name: name,
       password: password
     };
-    return this.http.post<any>(`${this.apiUrl}/login`, info);
+    return this.http.post<{ userId: number }>(`${this.apiUrl}/login`, info);
   }
 
-  getUsers1(name: string, pwd: string): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  getProfile(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/profile/${userId}`);
+  }
+
+  updateProfile(userId: number, realName: string, email: string, phone: string): Observable<any> {
+    let info = {
+      realName: realName,
+      email: email,
+      phone: phone
+    };
+    return this.http.put<any>(`${this.apiUrl}/profile/${userId}`, info);
   }
 }

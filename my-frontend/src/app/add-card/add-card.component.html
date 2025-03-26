@@ -1,0 +1,24 @@
+<p>add-card works!</p>
+<!-- filepath: c:\Users\David\Desktop\uni\cuarto\SegundoCuatri\DSW\TrabajoLab\aplicacion\my-frontend\src\app\add-card\add-card.component.html -->
+<form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="cardType">Tipo de Tarjeta:</label>
+      <select id="cardType" [(ngModel)]="card.cardType" name="cardType" required>
+        <option value="Visa">Visa</option>
+        <option value="MasterCard">MasterCard</option>
+      </select>
+    </div>
+    <div>
+      <label for="cardNumber">Número de Tarjeta:</label>
+      <input type="text" id="cardNumber" [(ngModel)]="card.cardNumber" name="cardNumber" required>
+    </div>
+    <div>
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" [(ngModel)]="card.cvv" name="cvv" required>
+    </div>
+    <div>
+      <label for="userId">ID de Usuario:</label>
+      <input type="text" id="userId" [(ngModel)]="card.userId" name="userId" required>
+    </div>
+    <button type="submit">Añadir Tarjeta</button>
+</form>

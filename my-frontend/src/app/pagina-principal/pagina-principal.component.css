@@ -1,23 +1,19 @@
-.welcome-container {
+/* filepath: c:\Users\David\Desktop\uni\cuarto\SegundoCuatri\DSW\TrabajoLab\aplicacion\my-frontend\src\app\pagina-principal\pagina-principal.component.css */
+.main-container {
     text-align: center;
     margin-top: 50px;
   }
   
-  .welcome-container h1 {
+  .main-container h1 {
     font-size: 2.5em;
     color: #333;
-  }
-  
-  .welcome-container p {
-    font-size: 1.2em;
-    color: #666;
   }
   
   .button-container {
     margin-top: 20px;
   }
   
-  .welcome-button {
+  .main-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -29,6 +25,6 @@
     transition: background-color 0.3s ease;
   }
   
-  .welcome-button:hover {
+  .main-button:hover {
     background-color: #0056b3;
   }
