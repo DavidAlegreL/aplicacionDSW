@@ -56,7 +56,7 @@ router.post('/login', (req, res) => {
   if (!name || !password) {
     return res.status(400).json({ error: 'Nombre y contraseña son requeridos' });
   }
-  db.get('SELECT * FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
+  db.get('SELECT id FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
     if (err) {
       console.error('Error autenticando usuario', err.message);
       return res.status(500).json({ error: 'Error autenticando usuario' });
@@ -64,7 +64,7 @@ router.post('/login', (req, res) => {
     if (!row) {
       return res.status(401).json({ error: 'Nombre o contraseña incorrectos' });
     }
-    res.status(200).json({ message: 'Login exitoso', user: row });
+    res.status(200).json({ userId: row.id });
   });
 });
 
@@ -86,17 +86,51 @@ router.get('/profile/:userId', (req, res) => {
 // Actualizar el perfil del usuario por su ID
 router.put('/profile/:userId', (req, res) => {
   const { userId } = req.params;
-  const { realName, email, phone } = req.body;
-  db.run('UPDATE User SET  email = ?, phone = ?, address = ? WHERE id = ?', [realName, email, phone, userId], function(err) {
-    if (err) {
-      console.error('Error actualizando perfil del usuario', err.message);
-      return res.status(500).json({ error: 'Error actualizando perfil del usuario' });
+  const { realName, email, phone, address } = req.body;
+
+  // Validar los datos recibidos
+  if (!realName || !email || !phone || !address) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+  }
+
+  db.run(
+    'UPDATE User SET realName = ?, email = ?, phone = ?, address = ? WHERE id = ?',
+    [realName, email, phone, address, userId],
+    function (err) {
+      if (err) {
+        console.error('Error actualizando perfil del usuario', err.message);
+        return res.status(500).json({ error: 'Error actualizando perfil del usuario' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ message: 'Perfil actualizado' });
     }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+  );
+});
+router.post('/top-up', (req, res) => {
+  const { userId, amount } = req.body;
+
+  // Validar los datos recibidos
+  if (!userId || amount == null || amount <= 0) {
+    return res.status(400).json({ error: 'ID de usuario y una cantidad válida son requeridos' });
+  }
+
+  // Actualizar el saldo del usuario
+  db.run(
+    'UPDATE User SET balance = balance + ? WHERE id = ?',
+    [amount, userId],
+    function (err) {
+      if (err) {
+        console.error('Error añadiendo saldo al usuario', err.message);
+        return res.status(500).json({ error: 'Error añadiendo saldo al usuario' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ message: 'Saldo añadido con éxito' });
     }
-    res.status(200).json({ message: 'Perfil actualizado' });
-  });
+  );
 });
 
 module.exports = router;

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,7 @@ export class LoginComponent {
   name?: string;
   password?: string;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   login() {
     if (!this.name || !this.password) {
@@ -37,6 +38,8 @@ export class LoginComponent {
       (response) => {
         console.log('Login exitoso', response);
         alert('Login exitoso');
+        localStorage.setItem('userId', response.userId.toString());
+        this.router.navigate(['/pagina-principal']);
       },
       (error) => {
         console.error('Error en el login', error);

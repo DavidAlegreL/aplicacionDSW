@@ -1,0 +1,9 @@
+
+<div class="cards-container">
+    <h1>Mis Tarjetas de Crédito</h1>
+    <div *ngFor="let card of cards" class="card">
+      <p>Tipo: {{ card.cardType }}</p>
+      <p>Número: {{ card.cardNumber }}</p>
+      <p>CVV: {{ card.cvv }}</p>
+    </div>
+  </div>

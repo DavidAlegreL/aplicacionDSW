@@ -16,7 +16,9 @@ function createTables() {
         id INTEGER PRIMARY KEY,
         cardType TEXT NOT NULL,
         cardNumber TEXT NOT NULL,
-        cvv TEXT NOT NULL
+        cvv TEXT NOT NULL,
+        userId INTEGER,
+        FOREIGN KEY (userId) REFERENCES User(id)
     )`);
 }
 

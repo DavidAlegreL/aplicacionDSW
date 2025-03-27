@@ -15,8 +15,10 @@ function createTables() {
         name TEXT NOT NULL,
         password TEXT NOT NULL,
         realName TEXT,
-        email TEXT NOT NULL,
-        phone TEXT
+        email TEXT,
+        phone TEXT,
+        address TEXT,
+        balance REAL DEFAULT 0
     )`);
 }
 module.exports = db;

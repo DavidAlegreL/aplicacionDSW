@@ -1,0 +1,27 @@
+mat-card {
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+  }
+  
+  mat-card-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  mat-card-content {
+    text-align: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
