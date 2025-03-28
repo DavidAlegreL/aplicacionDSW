@@ -1,4 +1,151 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f4f4f9; /* Light gray background */
+    color: #333; /* Dark text for readability */
+    margin: 0;
+    padding: 0;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Estilo para el header */
+header {
+    background-color: #003366; /* Azul oscuro */
+    color: white;
+    padding: 10px 20px; /* Reduce el padding para hacerlo más fino */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+header h1 {
+    font-size: 1.5em; /* Reduce el tamaño del título */
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaciado entre los botones */
+}
+
+header button {
+    background-color: transparent; /* Botones transparentes */
+    color: white;
+    border: 1px solid white; /* Borde blanco */
+    padding: 8px 15px; /* Reduce el padding */
+    border-radius: 20px; /* Bordes redondeados */
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header button:hover {
+    background-color: white; /* Fondo blanco al pasar el cursor */
+    color: #003366; /* Texto azul oscuro */
+}
+
+.user-icon img {
+    width: 35px; /* Tamaño del ícono */
+    height: 35px;
+    border-radius: 50%; /* Ícono circular */
+    border: 2px solid white; /* Borde blanco */
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.3s ease;
+}
+
+.user-icon img:hover {
+    transform: scale(1.1); /* Efecto de zoom */
+    border-color: #f4f4f9; /* Cambia el color del borde al pasar el cursor */
+}
+
+footer {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    color: #003366;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #003366;
+    color: white;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) {
+    background-color: #f4f4f9;
+}
+
+table tr:hover {
+    background-color: #e0e0e0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+ul li:hover {
+    background-color: #e0e0e0;
+}

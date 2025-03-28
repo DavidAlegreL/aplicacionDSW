@@ -15,10 +15,11 @@ const routes: Route[] = [
   { path: '', component: WelcomeComponent },
   { path: 'register', component: Register1Component },
   { path: 'login', component: LoginComponent },
+  { path: 'user-profile', component: PaginaPrincipalComponent },
+  { path: 'edit-profile', component: EditarPerfilComponent },
   { path: 'card', component: AddCardComponent },
   { path: 'pagina-principal', component: PaginaPrincipalComponent },
   { path: 'ver-tarjetas', component: VerTarjetasComponent },
-  { path: 'edit-profile', component: EditarPerfilComponent },
   { path: 'top-up', component: TopUpComponent }
 ];
 

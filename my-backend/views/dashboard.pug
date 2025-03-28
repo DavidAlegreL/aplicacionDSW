@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container
+    h2 Welcome, User!
+    .account-summary
+      h3 Account Summary
+      p Balance: $10,000
+      p Account Number: 123456789
+    .quick-actions
+      h3 Quick Actions
+      ul
+        li
+          a(href="/transfer") Transfer Money
+        li
+          a(href="/transactions") View Transactions
+        li
+          a(href="/profile") Update Profile
