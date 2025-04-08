@@ -116,6 +116,8 @@ router.post('/top-up', (req, res) => {
     return res.status(400).json({ error: 'ID de usuario y una cantidad válida son requeridos' });
   }
 
+  const date = new Date().toISOString();
+
   // Actualizar el saldo del usuario
   db.run(
     'UPDATE User SET balance = balance + ? WHERE id = ?',
@@ -128,9 +130,62 @@ router.post('/top-up', (req, res) => {
       if (this.changes === 0) {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
-      res.status(200).json({ message: 'Saldo añadido con éxito' });
+
+      // Registrar la transacción en la tabla UserTransaction
+      db.run(
+        'INSERT INTO UserTransaction (userId, amount, type, date) VALUES (?, ?, ?, ?)',
+        [userId, amount, 'top-up', date],
+        function (err) {
+          if (err) {
+            console.error('Error registrando la transacción:', err.message);
+            return res.status(500).json({ error: 'Error registrando la transacción' });
+          }
+          res.status(200).json({ message: 'Saldo añadido con éxito', transactionId: this.lastID });
+        }
+      );
     }
   );
 });
 
+router.post('/transactions', (req, res) => {
+  const { userId, amount, type } = req.body;
+
+  if (!userId || !amount || !type) {
+    return res.status(400).json({ error: 'Todos los campos (userId, amount, type) son requeridos' });
+  }
+
+  const date = new Date().toISOString();
+
+  db.run(
+    'INSERT INTO Transaction (userId, amount, type, date) VALUES (?, ?, ?, ?)',
+    [userId, amount, type, date],
+    function (err) {
+      if (err) {
+        console.error('Error registrando la transacción:', err.message);
+        return res.status(500).json({ error: 'Error registrando la transacción' });
+      }
+      res.status(201).json({ message: 'Transacción registrada con éxito', transactionId: this.lastID });
+    }
+  );
+});
+
+router.get('/transactions/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'ID de usuario requerido' });
+  }
+
+  db.all(
+    'SELECT * FROM UserTransaction WHERE userId = ? ORDER BY date DESC LIMIT 5',
+    [userId],
+    (err, rows) => {
+      if (err) {
+        console.error('Error obteniendo transacciones:', err.message);
+        return res.status(500).json({ error: 'Error obteniendo transacciones' });
+      }
+      res.json(rows);
+    }
+  );
+});
 module.exports = router;

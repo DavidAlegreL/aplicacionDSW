@@ -8,7 +8,6 @@ const axios = require('axios');
 router.post('/', async (req, res) => {
     const { cardType, cardNumber, cvv, userId } = req.body;
 
-    // Validar los detalles de la tarjeta de crédito
     if (!cardType || !['Visa', 'MasterCard'].includes(cardType)) {
         return res.status(400).json({ error: 'Tipo de tarjeta inválido' });
     }
@@ -23,13 +22,11 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        // Validar el userId haciendo una solicitud al backend de usuarios
         const userResponse = await axios.get(`http://localhost:3000/users/profile/${userId}`);
         if (!userResponse.data) {
             return res.status(400).json({ error: 'ID de usuario no válido' });
         }
 
-        // Insertar la nueva tarjeta de crédito
         db.run('INSERT INTO CreditCard(cardType, cardNumber, cvv, userId) VALUES(?, ?, ?, ?)', [cardType, cardNumber, cvv, userId], function(err) {
             if (err) {
                 console.error('Error insertando tarjeta de crédito', err.message);

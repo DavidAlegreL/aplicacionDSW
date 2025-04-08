@@ -8,14 +8,14 @@ import { LoginComponent } from './app/login/login.component';
 import { PaginaPrincipalComponent } from './app/pagina-principal/pagina-principal.component';
 import { VerTarjetasComponent } from './app/ver-tarjetas/ver-tarjetas.component';
 import { EditarPerfilComponent } from './app/editar-perfil/editar-perfil.component';
-import { provideHttpClient } from '@angular/common/http';
 import { TopUpComponent } from './app/top-up/top-up.component';
+import { provideHttpClient } from '@angular/common/http';
 
 const routes: Route[] = [
   { path: '', component: WelcomeComponent },
   { path: 'register', component: Register1Component },
   { path: 'login', component: LoginComponent },
-  { path: 'card', component: AddCardComponent },
+  { path: 'add-card', component: AddCardComponent },
   { path: 'pagina-principal', component: PaginaPrincipalComponent },
   { path: 'ver-tarjetas', component: VerTarjetasComponent },
   { path: 'edit-profile', component: EditarPerfilComponent },
