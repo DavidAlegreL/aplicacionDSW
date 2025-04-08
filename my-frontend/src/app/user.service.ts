@@ -19,12 +19,12 @@ export class UserService {
     return this.http.post<any>(this.apiUrl, info);
   }
 
-  login(name: string, password: string): Observable<{ userId: number }> {
+  login(name: string, password: string): Observable<{ userId: number; isAdmin: boolean }> {
     let info = {
       name: name,
       password: password
     };
-    return this.http.post<{ userId: number }>(`${this.apiUrl}/login`, info);
+    return this.http.post<{ userId: number; isAdmin: boolean }>(`${this.apiUrl}/login`, info);
   }
 
   getProfile(userId: number): Observable<any> {

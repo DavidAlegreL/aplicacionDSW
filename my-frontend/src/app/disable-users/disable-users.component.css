@@ -1,0 +1,19 @@
+.disable-users-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .disable-users-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .disable-users-container li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }

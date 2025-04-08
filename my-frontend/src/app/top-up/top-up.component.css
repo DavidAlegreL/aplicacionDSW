@@ -5,6 +5,7 @@
     border: 1px solid #ccc;
     border-radius: 10px;
     background-color: #f9f9f9;
+    margin-top: 20px;
   }
   
   .top-up-container h1 {
@@ -27,6 +28,7 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    
   }
   
   .top-up-form button {

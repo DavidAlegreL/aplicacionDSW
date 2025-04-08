@@ -10,4 +10,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './pagina-principal.component.html',
   styleUrls: ['./pagina-principal.component.css']
 })
-export class PaginaPrincipalComponent {}
+export class PaginaPrincipalComponent {isAdmin: boolean = false;
+
+  constructor() {
+    // Simula obtener el rol del usuario desde el almacenamiento local
+    const userRole = localStorage.getItem('userRole');
+    this.isAdmin = userRole === 'admin';
+  }}

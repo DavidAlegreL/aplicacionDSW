@@ -39,6 +39,7 @@ export class LoginComponent {
         console.log('Login exitoso', response);
         alert('Login exitoso');
         localStorage.setItem('userId', response.userId.toString());
+        localStorage.setItem('userRole', response.isAdmin ? 'admin' : 'user');
         this.router.navigate(['/pagina-principal']);
       },
       (error) => {

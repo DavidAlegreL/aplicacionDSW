@@ -10,6 +10,7 @@ import { VerTarjetasComponent } from './app/ver-tarjetas/ver-tarjetas.component'
 import { EditarPerfilComponent } from './app/editar-perfil/editar-perfil.component';
 import { provideHttpClient } from '@angular/common/http';
 import { TopUpComponent } from './app/top-up/top-up.component';
+import { DisableUsersComponent } from './app/disable-users/disable-users.component';
 
 const routes: Route[] = [
   { path: '', component: WelcomeComponent },
@@ -20,7 +21,8 @@ const routes: Route[] = [
   { path: 'card', component: AddCardComponent },
   { path: 'pagina-principal', component: PaginaPrincipalComponent },
   { path: 'ver-tarjetas', component: VerTarjetasComponent },
-  { path: 'top-up', component: TopUpComponent }
+  { path: 'top-up', component: TopUpComponent },
+  { path: 'disable-users', component: DisableUsersComponent } 
 ];
 
 bootstrapApplication(AppComponent, {
