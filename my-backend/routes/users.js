@@ -244,4 +244,122 @@ router.get('/transactions/:userId', (req, res) => {
     }
   );
 });
+router.get('/friends/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'ID de usuario requerido' });
+  }
+
+  db.all(
+    `SELECT u.id, u.name FROM Friends f
+     JOIN User u ON f.friendId = u.id
+     WHERE f.userId = ?`,
+    [userId],
+    (err, rows) => {
+      if (err) {
+        console.error('Error obteniendo amigos:', err.message);
+        return res.status(500).json({ error: 'Error obteniendo amigos' });
+      }
+      res.json(rows);
+    }
+  );
+});
+router.post('/transfer', (req, res) => {
+  const { userId, friendId, amount } = req.body;
+
+  if (!userId || !friendId || amount == null || amount <= 0) {
+    return res.status(400).json({ error: 'Todos los campos (userId, friendId, amount) son requeridos' });
+  }
+
+  db.serialize(() => {
+    // Verificar si el usuario tiene saldo suficiente
+    db.get('SELECT balance FROM User WHERE id = ?', [userId], (err, row) => {
+      if (err) {
+        console.error('Error verificando saldo:', err.message);
+        return res.status(500).json({ error: 'Error verificando saldo' });
+      }
+      if (!row || row.balance < amount) {
+        return res.status(400).json({ error: 'Saldo insuficiente' });
+      }
+
+      // Restar el saldo del usuario
+      db.run('UPDATE User SET balance = balance - ? WHERE id = ?', [amount, userId], function (err) {
+        if (err) {
+          console.error('Error restando saldo:', err.message);
+          return res.status(500).json({ error: 'Error restando saldo' });
+        }
+
+        // Añadir el saldo al amigo
+        db.run('UPDATE User SET balance = balance + ? WHERE id = ?', [amount, friendId], function (err) {
+          if (err) {
+            console.error('Error añadiendo saldo al amigo:', err.message);
+            return res.status(500).json({ error: 'Error añadiendo saldo al amigo' });
+          }
+
+          // Registrar la transacción
+          const date = new Date().toISOString();
+          db.run(
+            'INSERT INTO UserTransaction (userId, amount, type, date) VALUES (?, ?, ?, ?)',
+            [userId, -amount, 'transfer', date]
+          );
+          db.run(
+            'INSERT INTO UserTransaction (userId, amount, type, date) VALUES (?, ?, ?, ?)',
+            [friendId, amount, 'received', date]
+          );
+
+          res.status(200).json({ message: 'Transferencia realizada con éxito' });
+        });
+      });
+    });
+  });
+});
+router.post('/friends/add', (req, res) => {
+  const { userId, friendName } = req.body;
+
+  if (!userId || !friendName) {
+    return res.status(400).json({ error: 'ID de usuario y nombre del amigo son requeridos' });
+  }
+
+  // Buscar el ID del amigo por su nombre
+  db.get('SELECT id FROM User WHERE name = ?', [friendName], (err, row) => {
+    if (err) {
+      console.error('Error buscando amigo:', err.message);
+      return res.status(500).json({ error: 'Error buscando amigo' });
+    }
+    if (!row) {
+      return res.status(404).json({ error: 'Amigo no encontrado' });
+    }
+
+    const friendId = row.id;
+
+    // Verificar si ya son amigos
+    db.get(
+      'SELECT * FROM Friends WHERE userId = ? AND friendId = ?',
+      [userId, friendId],
+      (err, existingRow) => {
+        if (err) {
+          console.error('Error verificando amistad:', err.message);
+          return res.status(500).json({ error: 'Error verificando amistad' });
+        }
+        if (existingRow) {
+          return res.status(400).json({ error: 'Ya son amigos' });
+        }
+
+        // Insertar la relación de amistad
+        db.run(
+          'INSERT INTO Friends (userId, friendId) VALUES (?, ?)',
+          [userId, friendId],
+          function (err) {
+            if (err) {
+              console.error('Error añadiendo amigo:', err.message);
+              return res.status(500).json({ error: 'Error añadiendo amigo' });
+            }
+            res.status(201).json({ message: 'Amigo añadido con éxito' });
+          }
+        );
+      }
+    );
+  });
+});
 module.exports = router;

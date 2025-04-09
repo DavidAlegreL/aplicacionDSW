@@ -11,6 +11,7 @@ import { EditarPerfilComponent } from './app/editar-perfil/editar-perfil.compone
 import { TopUpComponent } from './app/top-up/top-up.component';
 import { provideHttpClient } from '@angular/common/http';
 import { DisableUsersComponent } from './app/disable-users/disable-users.component';
+import { FriendsComponent } from './app/friends/friends.component';
 
 const routes: Route[] = [
   { path: '', component: WelcomeComponent },
@@ -21,6 +22,7 @@ const routes: Route[] = [
   { path: 'ver-tarjetas', component: VerTarjetasComponent },
   { path: 'edit-profile', component: EditarPerfilComponent },
   { path: 'top-up', component: TopUpComponent },
+  { path: 'friends', component: FriendsComponent },
   { path: 'disable-users', component: DisableUsersComponent } 
 ];
 

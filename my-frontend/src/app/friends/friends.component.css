@@ -1,0 +1,31 @@
+.friends-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .add-friend-form {
+    margin-bottom: 20px;
+  }
+  
+  .add-friend-form input {
+    margin-right: 10px;
+  }
+  
+  .friends-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .friends-container li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .transfer-form {
+    margin-top: 20px;
+  }

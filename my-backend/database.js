@@ -46,5 +46,12 @@ function createTables() {
             console.log('Tabla UserTransaction creada correctamente.');
         }
     });
+    db.run(`CREATE TABLE IF NOT EXISTS Friends (
+        id INTEGER PRIMARY KEY,
+        userId INTEGER NOT NULL,
+        friendId INTEGER NOT NULL,
+        FOREIGN KEY (userId) REFERENCES User(id),
+        FOREIGN KEY (friendId) REFERENCES User(id)
+    )`);
 }
 module.exports = db;

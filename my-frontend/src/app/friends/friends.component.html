@@ -1,0 +1,26 @@
+<div class="friends-container">
+    <h1>Lista de Amigos</h1>
+  
+    <!-- Formulario para añadir amigos -->
+    <div class="add-friend-form">
+      <label for="friendName">Añadir amigo por nombre:</label>
+      <input id="friendName" type="text" [(ngModel)]="friendName" />
+      <button (click)="addFriend()">Añadir Amigo</button>
+    </div>
+  
+    <!-- Lista de amigos -->
+    <ul>
+      <li *ngFor="let friend of friends">
+        {{ friend.name }}
+        <button (click)="selectedFriendId = friend.id">Seleccionar</button>
+      </li>
+    </ul>
+  
+    <!-- Formulario para transferir dinero -->
+    <div *ngIf="selectedFriendId" class="transfer-form">
+      <h2>Transferir Dinero</h2>
+      <label for="amount">Cantidad:</label>
+      <input id="amount" type="number" [(ngModel)]="amount" />
+      <button (click)="transferMoney()">Transferir</button>
+    </div>
+</div>
