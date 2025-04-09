@@ -21,7 +21,9 @@ function createTables() {
         email TEXT,
         phone TEXT,
         address TEXT,
-        balance REAL DEFAULT 0
+        balance REAL DEFAULT 0, -- Aquí faltaba la coma
+        isAdmin INTEGER DEFAULT 0, -- 0: No admin, 1: Admin
+        isDisabled INTEGER DEFAULT 0 -- 0: Active, 1: Disabled
     )`, (err) => {
         if (err) {
             console.error('Error creando la tabla User:', err.message);
@@ -45,5 +47,4 @@ function createTables() {
         }
     });
 }
-
 module.exports = db;

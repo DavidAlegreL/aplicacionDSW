@@ -37,6 +37,7 @@ export class LoginComponent {
     this.userService.login(this.name, this.password).subscribe(
       (response) => {
         console.log('Login exitoso', response);
+        console.log('isAdmin recibido del backend:', response.isAdmin);
         alert('Login exitoso');
         localStorage.setItem('userId', response.userId.toString());
         localStorage.setItem('userRole', response.isAdmin ? 'admin' : 'user');

@@ -56,15 +56,15 @@ router.post('/login', (req, res) => {
   if (!name || !password) {
     return res.status(400).json({ error: 'Nombre y contraseña son requeridos' });
   }
-  db.get('SELECT id FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
+  db.get('SELECT id, isAdmin FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
     if (err) {
-      console.error('Error autenticando usuario', err.message);
+      console.error('Error autenticando usuario:', err.message);
       return res.status(500).json({ error: 'Error autenticando usuario' });
     }
     if (!row) {
       return res.status(401).json({ error: 'Nombre o contraseña incorrectos' });
     }
-    res.status(200).json({ userId: row.id });
+    res.status(200).json({ userId: row.id, isAdmin: row.isAdmin === 1 });
   });
 });
 
