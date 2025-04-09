@@ -6,4 +6,12 @@
       <button (click)="disableUser(user.id)">Deshabilitar</button>
     </li>
   </ul>
+
+  <h1>Habilitar Usuarios</h1>
+  <ul>
+    <li *ngFor="let user of disabledUsers">
+      {{ user.name }}
+      <button (click)="enableUser(user.id)">Habilitar</button>
+    </li>
+  </ul>
 </div>

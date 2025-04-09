@@ -50,22 +50,30 @@ router.post('/delete', (req, res) => {
 });
 
 // Login de usuario
+// Login de usuario
 router.post('/login', (req, res) => {
   const { name, password } = req.body;
   console.log('Datos recibidos para login:', req.body);
   if (!name || !password) {
     return res.status(400).json({ error: 'Nombre y contraseña son requeridos' });
   }
-  db.get('SELECT id, isAdmin FROM User WHERE name = ? AND password = ?', [name, password], (err, row) => {
-    if (err) {
-      console.error('Error autenticando usuario:', err.message);
-      return res.status(500).json({ error: 'Error autenticando usuario' });
+  db.get(
+    'SELECT id, isAdmin, isDisabled FROM User WHERE name = ? AND password = ?',
+    [name, password],
+    (err, row) => {
+      if (err) {
+        console.error('Error autenticando usuario:', err.message);
+        return res.status(500).json({ error: 'Error autenticando usuario' });
+      }
+      if (!row) {
+        return res.status(401).json({ error: 'Nombre o contraseña incorrectos' });
+      }
+      if (row.isDisabled === 1) {
+        return res.status(403).json({ error: 'Usuario deshabilitado' });
+      }
+      res.status(200).json({ userId: row.id, isAdmin: row.isAdmin === 1 });
     }
-    if (!row) {
-      return res.status(401).json({ error: 'Nombre o contraseña incorrectos' });
-    }
-    res.status(200).json({ userId: row.id, isAdmin: row.isAdmin === 1 });
-  });
+  );
 });
 
 // Obtener el perfil del usuario por su ID
@@ -165,6 +173,54 @@ router.post('/transactions', (req, res) => {
         return res.status(500).json({ error: 'Error registrando la transacción' });
       }
       res.status(201).json({ message: 'Transacción registrada con éxito', transactionId: this.lastID });
+    }
+  );
+});
+
+// Endpoint para deshabilitar un usuario
+router.put('/disable/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'ID de usuario requerido' });
+  }
+
+  db.run(
+    'UPDATE User SET isDisabled = 1 WHERE id = ?',
+    [userId],
+    function (err) {
+      if (err) {
+        console.error('Error deshabilitando usuario:', err.message);
+        return res.status(500).json({ error: 'Error deshabilitando usuario' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ message: 'Usuario deshabilitado correctamente' });
+    }
+  );
+});
+
+// Endpoint para habilitar un usuario
+router.put('/enable/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'ID de usuario requerido' });
+  }
+
+  db.run(
+    'UPDATE User SET isDisabled = 0 WHERE id = ?',
+    [userId],
+    function (err) {
+      if (err) {
+        console.error('Error habilitando usuario:', err.message);
+        return res.status(500).json({ error: 'Error habilitando usuario' });
+      }
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ message: 'Usuario habilitado correctamente' });
     }
   );
 });
