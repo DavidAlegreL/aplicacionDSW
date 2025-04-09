@@ -1,0 +1,9 @@
+<div class="disable-users-container">
+    <h1>Deshabilitar Usuarios</h1>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.name }}
+        <button (click)="disableUser(user.id)">Deshabilitar</button>
+      </li>
+    </ul>
+  </div>

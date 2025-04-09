@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-pagina-principal',
   standalone: true,
@@ -11,10 +12,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./pagina-principal.component.css']
 })
 export class PaginaPrincipalComponent implements OnInit {
+  isAdmin: boolean = false;
   userId: string | null = localStorage.getItem('userId'); // Obtener el ID del usuario desde el almacenamiento local
   transactions: any[] = []; // Almacenar las transacciones del usuario
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const userRole = localStorage.getItem('userRole');
+     this.isAdmin = userRole === 'admin';
+  }
 
   ngOnInit() {
     if (this.userId) {
@@ -26,4 +31,5 @@ export class PaginaPrincipalComponent implements OnInit {
         });
     }
   }
+  
 }
