@@ -6,14 +6,25 @@
     <button routerLink="/ver-tarjetas" class="main-button">Ver Tarjetas de Crédito</button>
     <button routerLink="/top-up" class="main-button">Añadir saldo</button>
     <button routerLink="/friends" class="main-button">Lista de Amigos</button>
+    <button routerLink="/disable-users" class="main-button" *ngIf="isAdmin">Desactivar Usuarios</button>
+  </div>
+
+  <div class="balance-container">
+    <h2>Saldo Actual</h2>
+    <p *ngIf="balance !== null">{{ balance | currency }}</p>
+    <p *ngIf="balance === null">Cargando saldo...</p>
   </div>
 
   <div class="transactions-container">
     <h2>Últimas Transacciones</h2>
     <ul>
       <li *ngFor="let transaction of transactions">
-        <p><strong>Tipo:</strong> {{ transaction.type }}</p>
-        <p><strong>Monto:</strong> {{ transaction.amount | currency }}</p>
+        <p><strong>Tipo:</strong> 
+          {{ transaction.type === 'transfer' ? 'Transferencia Enviada' :
+             transaction.type === 'received' ? 'Transferencia Recibida' : 
+             transaction.type === 'top-up' ? 'Recarga' : 'Otro' }}
+        </p>
+        <p><strong>Cantidad:</strong> {{ transaction.amount | currency }}</p>
         <p><strong>Fecha:</strong> {{ transaction.date | date:'short' }}</p>
       </li>
     </ul>

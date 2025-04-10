@@ -29,3 +29,43 @@
   .transfer-form {
     margin-top: 20px;
   }
+
+  .money-requests ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .money-requests li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .button-container {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .balance-container {
+    flex: 0.3;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .transactions-container {
+    flex: 1;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }

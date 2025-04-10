@@ -22,5 +22,18 @@
       <label for="amount">Cantidad:</label>
       <input id="amount" type="number" [(ngModel)]="amount" />
       <button (click)="transferMoney()">Transferir</button>
+      <button (click)="requestMoney()">Solicitar</button>
     </div>
+
+    <!-- Apartado de solicitudes de dinero -->
+  <div class="money-requests">
+    <h2>Solicitudes de Dinero</h2>
+    <ul>
+      <li *ngFor="let request of moneyRequests">
+        {{ request.requesterName }} solicita {{ request.amount | currency }}
+        <button (click)="acceptRequest(request.id)">Aceptar</button>
+        <button (click)="rejectRequest(request.id)">Rechazar</button>
+      </li>
+    </ul>
+  </div>
 </div>
