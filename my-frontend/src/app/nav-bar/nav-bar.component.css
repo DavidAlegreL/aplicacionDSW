@@ -1,32 +1,32 @@
-nav {
-    background-color: #333;
-    overflow: hidden;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav ul li {
-    float: left;
-  }
-  
-  nav ul li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  nav ul li a:hover {
-    background-color: #111;
-  }
-  
-  nav ul li img {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-  }
+/* Cambiar el color de los enlaces a negro */
+.nav-link {
+  color: black !important; /* Asegura que el color negro se aplique */
+  font-size: 1rem;
+  margin-right: 15px;
+}
+
+/* Cambiar el color al pasar el mouse */
+.nav-link:hover {
+  color: #007bff !important; /* Cambia a azul al pasar el mouse */
+}
+
+/* Estilo para el texto de la marca (EasyPay) */
+.navbar-brand {
+  color: black !important; /* Asegura que el texto de la marca sea negro */
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* Opcional: Ajustar el color del botón de hamburguesa */
+.navbar-toggler-icon {
+  background-color: black; /* Cambia el color del ícono de hamburguesa */
+}
+/* Cambiar el color del ícono de usuario */
+.nav-link i {
+  color: black; /* Cambia el color a negro */
+}
+
+/* Cambiar el color al pasar el mouse */
+.nav-link:hover i {
+  color: #007bff; /* Cambia el color a azul al pasar el mouse */
+}

@@ -559,4 +559,64 @@ router.get('/balance/:userId', (req, res) => {
   });
 });
 
+// Dividir un pago entre varios usuarios
+router.post('/split-payment', (req, res) => {
+  const { payerId, amount, participants } = req.body;
+
+  if (!payerId || !amount || !participants || participants.length === 0) {
+    return res.status(400).json({ error: 'Todos los campos (payerId, amount, participants) son requeridos' });
+  }
+
+  // Eliminar duplicados en los participantes
+  const uniqueParticipants = [...new Set(participants)];
+
+  const splitAmount = amount / uniqueParticipants.length;
+
+  db.serialize(() => {
+    // Verificar si todos los participantes tienen saldo suficiente
+    const insufficientBalances = [];
+    uniqueParticipants.forEach((participantId) => {
+      db.get('SELECT balance FROM User WHERE id = ?', [participantId], (err, row) => {
+        if (err) {
+          console.error(`Error verificando saldo del participante ${participantId}:`, err.message);
+          return res.status(500).json({ error: 'Error verificando saldo de los participantes' });
+        }
+        if (!row || row.balance < splitAmount) {
+          insufficientBalances.push(participantId);
+        }
+      });
+    });
+
+    // Si algún participante no tiene saldo suficiente, devolver un error
+    if (insufficientBalances.length > 0) {
+      return res.status(400).json({
+        error: 'Algunos participantes no tienen saldo suficiente',
+        insufficientBalances,
+      });
+    }
+
+    // Restar el monto dividido a cada participante
+    uniqueParticipants.forEach((participantId) => {
+      db.run('UPDATE User SET balance = balance - ? WHERE id = ?', [splitAmount, participantId], function (err) {
+        if (err) {
+          console.error(`Error restando saldo al participante ${participantId}:`, err.message);
+        }
+      });
+
+      // Registrar la transacción para cada participante
+      const date = new Date().toISOString();
+      db.run(
+        'INSERT INTO UserTransaction (userId, amount, type, date) VALUES (?, ?, ?, ?)',
+        [participantId, -splitAmount, 'split-payment', date],
+        function (err) {
+          if (err) {
+            console.error(`Error registrando transacción para el participante ${participantId}:`, err.message);
+          }
+        }
+      );
+    });
+
+    res.status(200).json({ message: 'Pago dividido con éxito' });
+  });
+});
 module.exports = router;

@@ -1,32 +1,115 @@
 <div class="main-container">
-  <h1>Página Principal</h1>
-  <div class="button-container">
-    <button routerLink="/edit-profile" class="main-button">Editar Perfil</button>
-    <button routerLink="/add-card" class="main-button">Vincular Tarjeta de Crédito</button>
-    <button routerLink="/ver-tarjetas" class="main-button">Ver Tarjetas de Crédito</button>
-    <button routerLink="/top-up" class="main-button">Añadir saldo</button>
-    <button routerLink="/friends" class="main-button">Lista de Amigos</button>
-    <button routerLink="/disable-users" class="main-button" *ngIf="isAdmin">Desactivar Usuarios</button>
-  </div>
+  <h1 class="text-center">Página Principal</h1>
 
-  <div class="balance-container">
-    <h2>Saldo Actual</h2>
-    <p *ngIf="balance !== null">{{ balance | currency }}</p>
-    <p *ngIf="balance === null">Cargando saldo...</p>
-  </div>
-
-  <div class="transactions-container">
-    <h2>Últimas Transacciones</h2>
-    <ul>
-      <li *ngFor="let transaction of transactions">
-        <p><strong>Tipo:</strong> 
-          {{ transaction.type === 'transfer' ? 'Transferencia Enviada' :
-             transaction.type === 'received' ? 'Transferencia Recibida' : 
-             transaction.type === 'top-up' ? 'Recarga' : 'Otro' }}
-        </p>
-        <p><strong>Cantidad:</strong> {{ transaction.amount | currency }}</p>
-        <p><strong>Fecha:</strong> {{ transaction.date | date:'short' }}</p>
-      </li>
+  <!-- Menú desplegable -->
+  <div class="dropdown mb-4">
+    <button
+      class="btn btn-primary dropdown-toggle"
+      type="button"
+      id="dropdownMenuButton"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-list-ul"></i> Menú
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" routerLink="/edit-profile">Editar Perfil</a></li>
+      <li><a class="dropdown-item" routerLink="/add-card">Vincular Tarjeta de Crédito</a></li>
+      <li><a class="dropdown-item" routerLink="/ver-tarjetas">Ver Tarjetas de Crédito</a></li>
+      <li><a class="dropdown-item" routerLink="/top-up">Añadir saldo</a></li>
+      <li><a class="dropdown-item" routerLink="/friends">Lista de Amigos</a></li>
+      <li *ngIf="isAdmin"><a class="dropdown-item" routerLink="/disable-users">Desactivar Usuarios</a></li>
     </ul>
+  </div>
+
+  <!-- Saldo Actual -->
+  <div class="balance-container text-center mb-4">
+    <h2>Saldo Actual</h2>
+    <p *ngIf="balance !== null" class="fs-4">{{ balance | currency }}</p>
+    <p *ngIf="balance === null" class="text-muted">Cargando saldo...</p>
+    <div class="d-flex justify-content-center gap-2 mt-3">
+      <button class="btn btn-success" routerLink="/top-up">
+        <i class="bi bi-wallet2"></i> Recargar Saldo
+      </button>
+      <button class="btn btn-primary" routerLink="/friends">
+        <i class="bi bi-arrow-right-circle"></i> Realizar Operación
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor de transacciones y tarjetas -->
+  <div class="row mt-5">
+    <!-- Últimas Transacciones -->
+    <div class="col-md-8">
+      <div class="transactions-container">
+        <h2>Últimas Transacciones</h2>
+        <div class="transactions-list" style="max-height: 400px; overflow-y: auto;">
+          <div *ngFor="let transaction of transactions" class="transaction-item mb-3">
+            <div class="d-flex align-items-center">
+              <div class="icon-container me-3">
+                <i
+                  class="bi"
+                  [ngClass]="{
+                    'bi-arrow-up-circle text-danger': transaction.type === 'transfer',
+                    'bi-arrow-down-circle text-success': transaction.type === 'received',
+                    'bi-wallet2 text-primary': transaction.type === 'top-up'
+                  }"
+                  style="font-size: 2rem;"
+                ></i>
+              </div>
+              <div>
+                <h5 class="mb-1">
+                  {{ transaction.type === 'transfer' ? 'Transferencia Enviada' :
+                     transaction.type === 'received' ? 'Transferencia Recibida' : 
+                     transaction.type === 'top-up' ? 'Recarga' : 'Otro' }}
+                </h5>
+                <p class="text-muted mb-0">
+                  {{ transaction.date | date: 'short' }}
+                </p>
+                <p><strong>Monto:</strong> {{ transaction.amount | currency }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Tarjetas -->
+    <div class="col-md-4">
+      <div class="cards-container">
+        <h2>Mis Tarjetas</h2>
+        <ul class="list-group">
+          <li *ngFor="let card of cards" class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ card.cardType }} - **** {{ card.cardNumber.slice(-4) }}</span>
+            <i class="bi bi-credit-card fs-4 text-primary"></i>
+          </li>
+        </ul>
+        <p *ngIf="cards.length === 0" class="text-muted">No tienes tarjetas vinculadas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario para dividir pagos -->
+  <div class="split-payment-container mt-5">
+    <h2>Dividir Pago</h2>
+    <form (ngSubmit)="splitPayment()">
+      <div class="mb-3">
+        <label for="amount" class="form-label">Monto Total</label>
+        <input type="number" class="form-control" id="amount" [(ngModel)]="splitAmount" name="amount" required />
+      </div>
+      <div class="mb-3">
+        <label for="participants" class="form-label">Participantes (IDs separados por comas)</label>
+        <input
+          type="text"
+          class="form-control"
+          id="participants"
+          [(ngModel)]="additionalParticipants"
+          name="participants"
+          placeholder="Ejemplo: 2,3"
+        />
+        <small class="text-muted">Tu ID ({{ userId }}) se incluirá automáticamente.</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Dividir Pago</button>
+    </form>
   </div>
 </div>

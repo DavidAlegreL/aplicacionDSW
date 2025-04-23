@@ -1,18 +1,26 @@
-<mat-card>
-    <mat-card-title>Login</mat-card-title>
-    <mat-card-content>
-      <form>
-        <mat-form-field appearance="fill">
-          <mat-label>Nombre</mat-label>
-          <input matInput [(ngModel)]="name" name="name">
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill">
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" [(ngModel)]="password" name="password">
-        </mat-form-field>
-  
-        <button mat-raised-button color="primary" (click)="login()">Login</button>
-      </form>
-    </mat-card-content>
-</mat-card>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header text-center bg-primary text-white">
+          <h4>EasyPay</h4>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" [(ngModel)]="name" name="name" placeholder="Introduce tu nombre">
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" placeholder="Introduce tu contraseña">
+            </div>
+            <div class="d-grid">
+              <button type="button" class="btn btn-primary" (click)="login()">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

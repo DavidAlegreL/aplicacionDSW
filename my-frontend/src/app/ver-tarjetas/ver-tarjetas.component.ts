@@ -10,19 +10,29 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./ver-tarjetas.component.css']
 })
 export class VerTarjetasComponent implements OnInit {
-  cards: any[] = [];
+  cards: any[] = []; // Array para almacenar las tarjetas del usuario
+  userId: string | null = null; // ID del usuario obtenido del localStorage
 
-  constructor(private lochttp: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.lochttp.get<any[]>(`http://localhost:3001/tarjetas/user?userId=${userId}`)
-        .subscribe(response => {
-          this.cards = response;
-        }, error => {
-          console.error('Error obteniendo tarjetas de crédito:', error);
-        });
+    this.userId = localStorage.getItem('userId'); // Obtener el ID del usuario del localStorage
+    if (this.userId) {
+      this.loadCards(); // Cargar las tarjetas del usuario
+    } else {
+      console.error('No se encontró el ID del usuario en el localStorage.');
     }
+  }
+
+  loadCards(): void {
+    this.http.get<any[]>(`http://localhost:3001/tarjetas/user?userId=${this.userId}`)
+      .subscribe(
+        (response) => {
+          this.cards = response; // Asignar las tarjetas obtenidas al array
+        },
+        (error) => {
+          console.error('Error obteniendo tarjetas de crédito:', error);
+        }
+      );
   }
 }

@@ -1,9 +1,15 @@
-
 <div class="cards-container">
-    <h1>Mis Tarjetas de Crédito</h1>
-    <div *ngFor="let card of cards" class="card">
-      <p>Tipo: {{ card.cardType }}</p>
-      <p>Número: {{ card.cardNumber }}</p>
-      <p>CVV: {{ card.cvv }}</p>
+  <h1>Mis Tarjetas de Crédito</h1>
+  <div *ngIf="cards.length > 0; else noCards">
+    <div *ngFor="let card of cards" class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ card.cardType }}</h5>
+        <p class="card-text">Número: **** **** **** {{ card.cardNumber.slice(-4) }}</p>
+        <p class="card-text">CVV: ***</p>
+      </div>
     </div>
   </div>
+  <ng-template #noCards>
+    <p>No tienes tarjetas vinculadas.</p>
+  </ng-template>
+</div>
