@@ -1,5 +1,5 @@
 // filepath: c:\Users\David\Desktop\uni\cuarto\SegundoCuatri\DSW\TrabajoLab\aplicacion\my-frontend\src\app\add-card\add-card.component.ts
-import { Component } from '@angular/core';
+/*import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,6 @@ export class AddCardComponent {
 
   constructor(private http: HttpClient) {}
 
-<<<<<<< HEAD
   async ngOnInit() {
     // Inicializar Stripe
     this.stripe = await loadStripe('pk_test_51RJHbY00mVaZlVqdS1kfaMj7rlz9TTJsPIdv8YFu4qXTRdeCvr0Qmt3WfC3r0AmPNcgPcs8q3Y5p1kjRXPZZOOXk00SxO09d8M'); // Reemplaza con tu clave pública
@@ -51,16 +50,5 @@ export class AddCardComponent {
       console.log('Método de pago creado:', paymentMethod);
       alert('Tarjeta añadida exitosamente');
     }
-=======
-  onSubmit() {
-    this.http.post('http://localhost:3001/credit-card', this.card)
-      .subscribe(response => {
-        console.log('Tarjeta añadida:', response);
-        alert('Tarjeta añadida exitosamente');
-      }, error => {
-        console.error('Error añadiendo tarjeta:', error);
-        alert('Error añadiendo tarjeta');
-      });
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
   }
-}
+}/** */

@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -26,34 +27,12 @@ export class LoginComponent {
   name?: string;
   password?: string;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router, private AuthService: AuthService) {}
 
   login() {
-<<<<<<< HEAD
   if (!this.name || !this.password) {
     alert('Por favor, ingresa tu nombre y contraseña.');
     return;
-=======
-    if (!this.name || !this.password) {
-      console.error('Nombre y contraseña son requeridos');
-      return;
-    }
-
-    this.userService.login(this.name, this.password).subscribe(
-      (response) => {
-        console.log('Login exitoso', response);
-        console.log('isAdmin recibido del backend:', response.isAdmin);
-        alert('Login exitoso');
-        localStorage.setItem('userId', response.userId.toString());
-        localStorage.setItem('userRole', response.isAdmin ? 'admin' : 'user');
-        this.router.navigate(['/pagina-principal']);
-      },
-      (error) => {
-        console.error('Error en el login', error);
-        alert('Error en el login: ' + error.error.error);
-      }
-    );
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
   }
 
   this.userService.login(this.name, this.password).subscribe(
@@ -61,7 +40,7 @@ export class LoginComponent {
       console.log('Login exitoso', response);
 
       // Actualizar el estado de autenticación en AuthService
-      this.authService.setAuthState(true, response.isAdmin, response.userId);
+      this.AuthService.setAuthState(true, response.isAdmin, response.userId);
 
       // Redirigir al usuario
       this.router.navigate(['/pagina-principal']);

@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrls: ['./nav-bar.component.css']
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
+  isLoggedIn: boolean = false;
+  isAdmin: boolean = false;
+  dropdownOpen: boolean = false;
 
-<<<<<<< HEAD
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
@@ -27,10 +34,7 @@ export class NavBarComponent {
   }
 
   logout(): void {
-  this.authService.setAuthState(false, false, null); // Agregar null como userId
-  this.router.navigate(['/login']);
+    this.authService.setAuthState(false, false, null); // Actualizar el estado de autenticación
+    this.router.navigate(['/login']);
+  }
 }
-}
-=======
-}
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)

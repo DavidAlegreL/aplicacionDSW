@@ -7,10 +7,7 @@ var cors = require('cors'); // Importar cors
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-<<<<<<< HEAD
 var tarjetasRouter = require('../tarjetasBackend/routes/tarjetas'); 
-=======
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
 
 var app = express();
 
@@ -25,10 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-<<<<<<< HEAD
 app.use('/tarjetas', tarjetasRouter); 
-=======
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

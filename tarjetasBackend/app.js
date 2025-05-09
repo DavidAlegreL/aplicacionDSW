@@ -4,10 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
-<<<<<<< HEAD
-const stripe = require('stripe')('clave'); // Reemplaza con tu clave secreta
-=======
->>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
+const stripe = require('stripe')(''); // Reemplaza con tu clave secreta
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
