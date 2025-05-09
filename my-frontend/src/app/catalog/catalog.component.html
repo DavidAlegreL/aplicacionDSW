@@ -1,0 +1,15 @@
+<div class="catalog-container">
+    <h1>Catálogo de Productos</h1>
+    <div *ngIf="products.length > 0; else noProducts">
+      <div *ngFor="let product of products" class="product-item" (click)="purchaseProduct(product.id)">
+        <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description }}</p>
+        <p><strong>Precio:</strong> {{ product.price | currency }}</p>
+        <p><strong>Tienda:</strong> {{ product.store }}</p>
+      </div>
+    </div>
+    <ng-template #noProducts>
+      <p>No hay productos disponibles en este momento.</p>
+    </ng-template>
+  </div>

@@ -1,0 +1,37 @@
+<div class="virtual-cards-container">
+  <h1>Crear Tarjeta Virtual</h1>
+  <form (ngSubmit)="createVirtualCard()">
+    <div>
+      <label for="name">Nombre:</label>
+      <input id="name" [(ngModel)]="name" name="name" required />
+    </div>
+    <div>
+      <label for="email">Correo Electrónico:</label>
+      <input id="email" [(ngModel)]="email" name="email" type="email" required />
+    </div>
+    <div>
+      <label for="line1">Dirección:</label>
+      <input id="line1" [(ngModel)]="billingAddress.line1" name="line1" required />
+    </div>
+    <div>
+      <label for="city">Ciudad:</label>
+      <input id="city" [(ngModel)]="billingAddress.city" name="city" required />
+    </div>
+    <div>
+      <label for="postal_code">Código Postal:</label>
+      <input id="postal_code" [(ngModel)]="billingAddress.postal_code" name="postal_code" required />
+    </div>
+    <div>
+      <label for="country">País:</label>
+      <input id="country" [(ngModel)]="billingAddress.country" name="country" required />
+    </div>
+    <button type="submit">Crear Tarjeta</button>
+  </form>
+
+  <div *ngIf="cardResponse">
+    <h2>Tarjeta Virtual Creada</h2>
+    <p><strong>ID:</strong> {{ cardResponse.id }}</p>
+    <p><strong>Estado:</strong> {{ cardResponse.status }}</p>
+    <p><strong>Tipo:</strong> {{ cardResponse.type }}</p>
+  </div>
+</div>

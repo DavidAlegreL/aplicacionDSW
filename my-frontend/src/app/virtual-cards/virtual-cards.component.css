@@ -1,0 +1,46 @@
+.virtual-cards-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .virtual-cards-container h1 {
+    text-align: center;
+  }
+  
+  .virtual-cards-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .virtual-cards-container form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .virtual-cards-container form label {
+    font-weight: bold;
+  }
+  
+  .virtual-cards-container form input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .virtual-cards-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .virtual-cards-container button:hover {
+    background-color: #0056b3;
+  }
