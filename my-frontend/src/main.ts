@@ -12,6 +12,11 @@ import { TopUpComponent } from './app/top-up/top-up.component';
 import { provideHttpClient } from '@angular/common/http';
 import { DisableUsersComponent } from './app/disable-users/disable-users.component';
 import { FriendsComponent } from './app/friends/friends.component';
+<<<<<<< HEAD
+import { VirtualCardsComponent } from './app/virtual-cards/virtual-cards.component'; 
+import { CatalogComponent } from './app/catalog/catalog.component';
+=======
+>>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
 
 const routes: Route[] = [
   { path: '', component: WelcomeComponent },
@@ -23,7 +28,9 @@ const routes: Route[] = [
   { path: 'edit-profile', component: EditarPerfilComponent },
   { path: 'top-up', component: TopUpComponent },
   { path: 'friends', component: FriendsComponent },
-  { path: 'disable-users', component: DisableUsersComponent } 
+  { path: 'disable-users', component: DisableUsersComponent },
+  { path: 'catalog', component: CatalogComponent },
+  { path: 'virtual-cards', component: VirtualCardsComponent } 
 ];
 
 bootstrapApplication(AppComponent, {

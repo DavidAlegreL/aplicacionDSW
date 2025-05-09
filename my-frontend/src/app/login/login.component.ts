@@ -29,6 +29,11 @@ export class LoginComponent {
   constructor(private userService: UserService, private router: Router) {}
 
   login() {
+<<<<<<< HEAD
+  if (!this.name || !this.password) {
+    alert('Por favor, ingresa tu nombre y contraseña.');
+    return;
+=======
     if (!this.name || !this.password) {
       console.error('Nombre y contraseña son requeridos');
       return;
@@ -48,5 +53,23 @@ export class LoginComponent {
         alert('Error en el login: ' + error.error.error);
       }
     );
+>>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
   }
+
+  this.userService.login(this.name, this.password).subscribe(
+    (response) => {
+      console.log('Login exitoso', response);
+
+      // Actualizar el estado de autenticación en AuthService
+      this.authService.setAuthState(true, response.isAdmin, response.userId);
+
+      // Redirigir al usuario
+      this.router.navigate(['/pagina-principal']);
+    },
+    (error) => {
+      console.error('Error en el login', error);
+      alert('Error en el login: ' + error.error.error);
+    }
+  );
+}
 }

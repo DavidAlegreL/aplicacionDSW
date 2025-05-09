@@ -14,9 +14,10 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
       <li><a class="dropdown-item" routerLink="/edit-profile">Editar Perfil</a></li>
-      <li><a class="dropdown-item" routerLink="/add-card">Vincular Tarjeta de Crédito</a></li>
+      <li><a class="dropdown-item" routerLink="/virtual-cards">Vincular Tarjeta de Crédito</a></li>
       <li><a class="dropdown-item" routerLink="/ver-tarjetas">Ver Tarjetas de Crédito</a></li>
       <li><a class="dropdown-item" routerLink="/top-up">Añadir saldo</a></li>
+      <li><a class="dropdown-item" routerLink="/catalog">catalogo de tiendas</a></li>
       <li><a class="dropdown-item" routerLink="/friends">Lista de Amigos</a></li>
       <li *ngIf="isAdmin"><a class="dropdown-item" routerLink="/disable-users">Desactivar Usuarios</a></li>
     </ul>
@@ -78,17 +79,39 @@
     <div class="col-md-4">
       <div class="cards-container">
         <h2>Mis Tarjetas</h2>
-        <ul class="list-group">
-          <li *ngFor="let card of cards" class="list-group-item d-flex justify-content-between align-items-center">
-            <span>{{ card.cardType }} - **** {{ card.cardNumber.slice(-4) }}</span>
-            <i class="bi bi-credit-card fs-4 text-primary"></i>
-          </li>
-        </ul>
-        <p *ngIf="cards.length === 0" class="text-muted">No tienes tarjetas vinculadas.</p>
+        <div *ngIf="cards.length > 0; else noCards">
+          <div *ngFor="let card of cards" class="card-item">
+            <p><strong>ID:</strong> {{ card.id }}</p>
+            <p><strong>Últimos 4 dígitos:</strong> {{ card.last4 }}</p>
+            <p><strong>Estado:</strong> {{ card.status }}</p>
+            <p><strong>Tipo:</strong> {{ card.type }}</p>
+          </div>
+        </div>
+        <ng-template #noCards>
+          <p class="text-muted">No tienes tarjetas vinculadas.</p>
+        </ng-template>
+      </div>
+  </div>
+
+  <div class="transactions-container mt-4">
+    <h2>Últimas Compras</h2>
+    <div class="transactions-list" style="max-height: 400px; overflow-y: auto;">
+      <div *ngFor="let purchase of purchases" class="transaction-item mb-3">
+        <div class="d-flex align-items-center">
+          <div class="icon-container me-3">
+            <i class="bi bi-shop text-success" style="font-size: 2rem;"></i>
+          </div>
+          <div>
+            <h5 class="mb-1">{{ purchase.storeName }}</h5> <!-- Nombre de la tienda -->
+            <p class="text-muted mb-0">{{ purchase.purchaseDate | date: 'short' }}</p>
+            <p><strong>Producto:</strong> {{ purchase.productName }}</p>
+            <p><strong>Precio:</strong> {{ purchase.productPrice | currency }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
+  
   <!-- Formulario para dividir pagos -->
   <div class="split-payment-container mt-5">
     <h2>Dividir Pago</h2>

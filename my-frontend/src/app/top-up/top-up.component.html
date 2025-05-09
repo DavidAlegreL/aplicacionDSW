@@ -1,4 +1,42 @@
 <div class="top-up-container">
+<<<<<<< HEAD
+  <h1>Añadir Saldo</h1>
+
+  <!-- Lista de tarjetas -->
+  <div class="cards-container">
+    <h2>Selecciona una Tarjeta</h2>
+    <div *ngIf="cards.length > 0; else noCards">
+      <div
+        *ngFor="let card of cards"
+        class="card-item"
+        [class.selected]="card.id === selectedCardId"
+        (click)="selectCard(card.id)"
+      >
+        <p><strong>Tipo:</strong> {{ card.type }}</p>
+        <p><strong>Número:</strong> {{ card.last4 }}</p>
+      </div>
+    </div>
+    <ng-template #noCards>
+      <p>No tienes tarjetas disponibles.</p>
+    </ng-template>
+  </div>
+
+  <!-- Formulario para añadir saldo -->
+  <form (ngSubmit)="addBalance()" class="top-up-form">
+    <div>
+      <label for="amount">Cantidad:</label>
+      <input
+        type="number"
+        id="amount"
+        [(ngModel)]="amount"
+        name="amount"
+        required
+      />
+    </div>
+    <button type="submit" [disabled]="!selectedCardId">Añadir Saldo</button>
+  </form>
+</div>
+=======
     <h1>Añadir Saldo</h1>
   
     <!-- Formulario para verificar la tarjeta -->
@@ -31,3 +69,4 @@
       <button type="submit">Añadir Saldo</button>
     </form>
   </div>
+>>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)

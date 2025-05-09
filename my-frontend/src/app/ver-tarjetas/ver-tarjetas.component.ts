@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { CardService } from '../card.service';
 
 @Component({
   selector: 'app-ver-tarjetas',
@@ -10,17 +11,21 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./ver-tarjetas.component.css']
 })
 export class VerTarjetasComponent implements OnInit {
-  cards: any[] = []; // Array para almacenar las tarjetas del usuario
-  userId: string | null = null; // ID del usuario obtenido del localStorage
+  userId: string | null = localStorage.getItem('userId');
+  cards: any[] = [];
+  
+  constructor(private http: HttpClient, private cardService: CardService) {}
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.userId = localStorage.getItem('userId'); // Obtener el ID del usuario del localStorage
+  ngOnInit(): void {
     if (this.userId) {
-      this.loadCards(); // Cargar las tarjetas del usuario
-    } else {
-      console.error('No se encontró el ID del usuario en el localStorage.');
+      this.cardService.getUserCards(this.userId).subscribe(
+        (response) => {
+          this.cards = response.cards;
+        },
+        (error) => {
+          console.error('Error obteniendo tarjetas:', error);
+        }
+      );
     }
   }
 

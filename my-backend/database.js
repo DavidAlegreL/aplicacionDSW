@@ -19,6 +19,7 @@ function createTables() {
         password TEXT NOT NULL,
         realName TEXT,
         email TEXT,
+        cardholderId TEXT,
         phone TEXT,
         address TEXT,
         balance REAL DEFAULT 0, -- Aquí faltaba la coma
@@ -53,5 +54,23 @@ function createTables() {
         FOREIGN KEY (userId) REFERENCES User(id),
         FOREIGN KEY (friendId) REFERENCES User(id)
     )`);
+    db.run(`CREATE TABLE IF NOT EXISTS Products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        description TEXT,
+        price REAL NOT NULL,
+        image TEXT,
+        store TEXT NOT NULL
+      )`);
+    db.run(`CREATE TABLE IF NOT EXISTS Purchases (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
+        productId INTEGER NOT NULL,
+        quantity INTEGER NOT NULL,
+        totalPrice REAL NOT NULL,
+        date TEXT NOT NULL,
+        FOREIGN KEY (userId) REFERENCES User(id),
+        FOREIGN KEY (productId) REFERENCES Products(id)
+      )`);
 }
 module.exports = db;

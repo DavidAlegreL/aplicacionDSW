@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; // Importar FormsModule para usar ngModel
+import { FormsModule } from '@angular/forms';
+import { CardService } from '../card.service'; 
 
 @Component({
   selector: 'app-pagina-principal',
@@ -19,11 +20,10 @@ export class PaginaPrincipalComponent implements OnInit {
   balance: number | null = null; // Almacenar el balance del usuario
   cards: any[] = []; // Almacenar las tarjetas del usuario
   splitAmount: number = 0; // Monto total a dividir
-  participantIds: string = ''; // IDs de los participantes separados por comas
   additionalParticipants: string = ''; // IDs adicionales ingresados manualmente
+  purchases: any[] = []; // Almacenar las compras del usuario
 
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cardService: CardService) {
     const userRole = localStorage.getItem('userRole');
     this.isAdmin = userRole === 'admin';
   }
@@ -32,7 +32,15 @@ export class PaginaPrincipalComponent implements OnInit {
     if (this.userId) {
       this.loadTransactions();
       this.loadBalance();
-      this.loadCards(); // Cargar las tarjetas del usuario
+      this.loadPurchases();
+      this.cardService.getUserCards(this.userId).subscribe(
+        (response) => {
+          this.cards = response.cards;
+        },
+        (error) => {
+          console.error('Error obteniendo tarjetas:', error);
+        }
+      );
     } else {
       console.error('No se encontró el ID del usuario en el localStorage.');
     }
@@ -61,17 +69,15 @@ export class PaginaPrincipalComponent implements OnInit {
         }
       );
   }
-
-  loadCards() {
-    this.http.get<any[]>(`http://localhost:3001/tarjetas/user?userId=${this.userId}`)
-      .subscribe(
-        (response) => {
-          this.cards = response; // Guardar las tarjetas en la variable
-        },
-        (error) => {
-          console.error('Error obteniendo tarjetas:', error);
-        }
-      );
+  loadPurchases(): void {
+    this.http.get<any[]>(`http://localhost:3000/users/purchases/${this.userId}`).subscribe(
+      (response) => {
+        this.purchases = response;
+      },
+      (error) => {
+        console.error('Error obteniendo compras:', error);
+      }
+    );
   }
 
   splitPayment() {

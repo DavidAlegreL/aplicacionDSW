@@ -1,6 +1,39 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">EasyPay</a>
+<<<<<<< HEAD
+
+    <!-- Menú antes de iniciar sesión -->
+    <ng-container *ngIf="!isLoggedIn">
+      <div class="button-container">
+        <button routerLink="/register" class="btn btn-primary">Registrar</button>
+        <button routerLink="/login" class="btn btn-primary">Login</button>
+      </div>
+    </ng-container>
+
+    <!-- Menú después de iniciar sesión -->
+    <ng-container *ngIf="isLoggedIn">
+      <div class="dropdown">
+        <button
+          class="btn btn-primary dropdown-toggle"
+          type="button"
+          (click)="toggleDropdown()"
+        >
+          Menú
+        </button>
+        <ul class="dropdown-menu" [class.show]="dropdownOpen">
+          <li><a class="dropdown-item" routerLink="/edit-profile">Editar Perfil</a></li>
+          <li><a class="dropdown-item" routerLink="/virtual-cards">Vincular Tarjeta de Crédito</a></li>
+          <li><a class="dropdown-item" routerLink="/ver-tarjetas">Ver Tarjetas de Crédito</a></li>
+          <li><a class="dropdown-item" routerLink="/top-up">Añadir saldo</a></li>
+          <li><a class="dropdown-item" routerLink="/friends">Lista de Amigos</a></li>
+          <li *ngIf="isAdmin"><a class="dropdown-item" routerLink="/disable-users">Desactivar Usuarios</a></li>
+          <li><hr /></li>
+          <li><a class="dropdown-item" (click)="logout()">Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </ng-container>
+=======
     <button
       class="navbar-toggler"
       type="button"
@@ -27,5 +60,6 @@
         </li>
       </ul>
     </div>
+>>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
   </div>
 </nav>

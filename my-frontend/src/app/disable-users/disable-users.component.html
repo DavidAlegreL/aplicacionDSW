@@ -1,17 +1,17 @@
 <div class="disable-users-container">
-  <h1>Deshabilitar Usuarios</h1>
-  <ul>
-    <li *ngFor="let user of users">
-      {{ user.name }}
-      <button (click)="disableUser(user.id)">Deshabilitar</button>
-    </li>
-  </ul>
-
-  <h1>Habilitar Usuarios</h1>
-  <ul>
-    <li *ngFor="let user of disabledUsers">
-      {{ user.name }}
-      <button (click)="enableUser(user.id)">Habilitar</button>
-    </li>
-  </ul>
-</div>
+    <h1>Deshabilitar Usuarios</h1>
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.name }}
+        <button (click)="disableUser(user.id)">Deshabilitar</button>
+      </li>
+    </ul>
+  
+    <h1>Habilitar Usuarios</h1>
+    <ul>
+      <li *ngFor="let user of disabledUsers">
+        {{ user.name }}
+        <button (click)="enableUser(user.id)">Habilitar</button>
+      </li>
+    </ul>
+  </div>

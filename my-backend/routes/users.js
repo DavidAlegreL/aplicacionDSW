@@ -517,7 +517,8 @@ router.post('/friends/add', (req, res) => {
       }
     );
   });
-});// Endpoint para solicitar dinero
+});
+// Endpoint para solicitar dinero
 router.post('/request-money', (req, res) => {
   const { userId, friendId, amount } = req.body;
 
@@ -619,4 +620,122 @@ router.post('/split-payment', (req, res) => {
     res.status(200).json({ message: 'Pago dividido con éxito' });
   });
 });
+
+// Obtener el catálogo de productos
+router.get('/catalog', (req, res) => {
+  db.all(
+    `SELECT id, name, description, price, image, store FROM Products`,
+    [],
+    (err, rows) => {
+      if (err) {
+        console.error('Error obteniendo el catálogo:', err.message);
+        return res.status(500).json({ error: 'Error obteniendo el catálogo' });
+      }
+      res.status(200).json(rows);
+    }
+  );
+});
+
+// Realizar una compra y actualizar el saldo del usuario
+router.post('/purchase', (req, res) => {
+  const { userId, productId } = req.body;
+
+  if (!userId || !productId) {
+    return res.status(400).json({ error: 'El ID del usuario y del producto son requeridos' });
+  }
+
+  // Obtener el precio del producto
+  db.get(
+    `SELECT price FROM Products WHERE id = ?`,
+    [productId],
+    (err, product) => {
+      if (err) {
+        console.error('Error obteniendo el producto:', err.message);
+        return res.status(500).json({ error: 'Error obteniendo el producto' });
+      }
+
+      if (!product) {
+        return res.status(404).json({ error: 'Producto no encontrado' });
+      }
+
+      const productPrice = product.price;
+
+      // Obtener el saldo del usuario
+      db.get(
+        `SELECT balance FROM User WHERE id = ?`,
+        [userId],
+        (err, user) => {
+          if (err) {
+            console.error('Error obteniendo el saldo del usuario:', err.message);
+            return res.status(500).json({ error: 'Error obteniendo el saldo del usuario' });
+          }
+
+          if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+          }
+
+          const userBalance = user.balance;
+
+          // Verificar si el usuario tiene suficiente saldo
+          if (userBalance < productPrice) {
+            return res.status(400).json({ error: 'Saldo insuficiente para realizar la compra' });
+          }
+
+          // Actualizar el saldo del usuario
+          const newBalance = userBalance - productPrice;
+          db.run(
+            `UPDATE User SET balance = ? WHERE id = ?`,
+            [newBalance, userId],
+            (err) => {
+              if (err) {
+                console.error('Error actualizando el saldo del usuario:', err.message);
+                return res.status(500).json({ error: 'Error actualizando el saldo del usuario' });
+              }
+
+              // Registrar la compra
+              db.run(
+                `INSERT INTO Purchases (userId, productId, quantity, totalPrice, date) VALUES (?, ?, ?, ?, datetime('now'))`,
+                [userId, productId, 1, productPrice],
+                (err) => {
+                  if (err) {
+                    console.error('Error registrando la compra:', err.message);
+                    return res.status(500).json({ error: 'Error registrando la compra' });
+                  }
+
+                  res.status(200).json({ message: 'Compra realizada con éxito', newBalance });
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+  );
+});
+// Obtener las últimas compras de un usuario
+router.get('/purchases/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'El ID del usuario es requerido' });
+  }
+
+  db.all(
+    `SELECT pr.store AS storeName, pr.name AS productName, pr.price AS productPrice, t.date AS purchaseDate
+     FROM Purchases t
+     INNER JOIN Products pr ON t.productId = pr.id
+     WHERE t.userId = ?
+     ORDER BY t.date DESC
+     LIMIT 10`,
+    [userId],
+    (err, rows) => {
+      if (err) {
+        console.error('Error obteniendo las compras:', err.message);
+        return res.status(500).json({ error: 'Error obteniendo las compras' });
+      }
+      res.status(200).json(rows);
+    }
+  );
+});
+
 module.exports = router;

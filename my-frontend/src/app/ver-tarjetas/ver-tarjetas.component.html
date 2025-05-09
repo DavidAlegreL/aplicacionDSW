@@ -3,9 +3,9 @@
   <div *ngIf="cards.length > 0; else noCards">
     <div *ngFor="let card of cards" class="card shadow-sm mb-3">
       <div class="card-body">
-        <h5 class="card-title">{{ card.cardType }}</h5>
-        <p class="card-text">Número: **** **** **** {{ card.cardNumber.slice(-4) }}</p>
-        <p class="card-text">CVV: ***</p>
+        <h5 class="card-title">{{ card.type }}</h5>
+        <p class="card-text">Número: **** **** **** {{ card.last4 }}</p>
+        <p class="card-text">CVV: {{ card.cvv }}</p>
       </div>
     </div>
   </div>

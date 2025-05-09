@@ -4,10 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+<<<<<<< HEAD
+const stripe = require('stripe')('clave'); // Reemplaza con tu clave secreta
+=======
+>>>>>>> parent of 2968b7e4 (cambios en el fronted e intento de creacion de tarjetas con stripe)
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var tarjetasRouter = require('./routes/tarjetas'); // Importar el enrutador de tarjetas
+var tarjetasRouter = require('./routes/tarjetas'); 
 
 var app = express();
 
